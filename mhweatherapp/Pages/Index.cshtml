@@ -1,0 +1,24 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+<div class="row justify-content-center">
+    <div class="col-auto">
+        <h1 class="display-4">Väder från databasen</h1>
+        @if (Model.Stats != null)
+        {
+            <component type="typeof(Components.DisplayWeatherOverview)" render-mode="Static" param-StatsModel="Model.Stats" />
+        }
+        else if (Model.Details != null)
+        {
+            <component type="typeof(Components.DisplayWeatherDetails)" render-mode="Static" param-Weather="Model.Details" />
+            <p><a class="btn btn-primary" asp-page="/Index" asp-route-city="@Model.Details.City">Tillbaka till @Model.Details.City</a></p>
+        }
+else
+            {
+                <p>Klicka på en stad ovan för att se väderdata från databasen.</p>
+                <p>För att ladda in nya data i databasen, använd hämta data sidan.</p>
+            }
+    </div>
+</div>

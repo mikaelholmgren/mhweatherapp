@@ -1,0 +1,64 @@
+﻿@page
+@using mhweatherapp.Models
+@model mhweatherapp.Pages.LoadDataModel
+@{
+    ViewData["Title"] = "Hämta data till databasen";
+    var confirmMsg =(string) ViewData["SavedData"];
+}
+<div class="text-center">
+    <h1>@ViewData["Title"]</h1>
+    @if (Model.Confirm)
+    {
+        <component type="typeof(Components.DisplayWeatherDetails)" render-mode="Static" param-weather="Model.CurrentWeather" />
+        if (Model.CurrentWeather.Type == MeasurementTypes.DailyHistorical)
+        {
+            if (Model.Exists)
+            {
+                        <p>Data för denna stad och datum finns redan i databasen, så den kommer inte att sparas.</p>
+                        <p>
+                            <a class="btn btn-primary" asp-page="LoadData" asp-route-abort="true">Ok</a>
+                        </p>
+            }
+            else
+            {
+            <p>Spara till databasen?</p>
+            <p>
+                <a class="btn btn-primary" asp-page="/LoadData">Ja</a>
+                <a class="btn btn-primary" asp-page="LoadData" asp-route-abort="true">Nej</a>
+            </p>
+            }
+        }
+        else if (Model.CurrentWeather.Type == MeasurementTypes.Current)
+        {
+            <p>Data för nuvarande väder sparas inte i databasen. Ange ett datum om du vill spara dygnsdata till databasen.</p>
+            <p>
+                <a class="btn btn-primary" asp-page="LoadData" asp-route-abort="true">Ok</a>
+            </p>
+        }
+
+    }
+    else
+    {
+        if (!string.IsNullOrEmpty(confirmMsg))
+                {
+                    <p>@confirmMsg</p>
+                }
+        <div class="input">
+            <form method="post">
+                <div class="form-group">
+                    <input asp-for="CityName" placeholder="Ange stad att hämta från" />
+
+                </div>
+                <p>Ange datum för historiskt väder för dygn, lämna blankt för nuvarande.</p>
+                <div class="form-group">
+                    <input asp-for="Date" placeholder="(åååå-mm-dd), frivilligt" />
+
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Hämta" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    }
+</div>

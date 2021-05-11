@@ -1,0 +1,14 @@
+﻿@if (Weather.Type == Models.MeasurementTypes.Current)
+{
+    <h3>Nuvarande väder i @Weather.City</h3>
+
+    <p>@Weather.CurrentValues.Description @Weather.CurrentValues.Temperature grader</p>
+}
+else if (Weather.Type == Models.MeasurementTypes.DailyHistorical)
+{
+    <h3>Dygnsväder i @Weather.City den @Weather.Date</h3>
+    <p>Värdena nedan gäller för ovan visat datum.</p>
+    <p>Daglig medeltemperatur: @Weather.DailyValues.AvgDailyTemp</p>
+    <p>Lägsta temperatur: @Weather.DailyValues.MinTemp</p>
+    <p>Högsta temperatur: @Weather.DailyValues.MaxTemp</p>
+}

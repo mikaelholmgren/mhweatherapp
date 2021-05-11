@@ -1,0 +1,66 @@
+﻿@using mhweatherapp.Models
+<h3>Väderöversikt - @StatsModel.CityName</h3>
+<p>Nedan visas vår sparade data från @StatsModel.CityName.</p>
+@{ 
+    var springMsg = StatsModel.SpringDate != null ? StatsModel.SpringDate.Value.ToShortDateString() : "Hittas inte";
+    var summerMsg = StatsModel.SummerDate != null ? StatsModel.SummerDate.Value.ToShortDateString() : "Hittas inte";
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Beskrivning</th>
+            <th>Värde</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Antal dygnsmätvärden:</td>
+            <td>@StatsModel.MeasurementCount</td>
+        </tr>
+        <tr>
+            <td>Beräknad medeltemperatur:</td>
+            <td>@StatsModel.AverageTemp</td>
+        </tr>
+        <tr>
+            <td>Lägsta temperatur:</td>
+            <td>@StatsModel.MinTemp</td>
+        </tr>
+        <tr>
+            <td>Högsta temperatur:</td>
+            <td>@StatsModel.MaxTemp</td>
+        </tr>
+        <tr>
+            <td>Uppskattat datum för våren</td>
+            <td>@springMsg</td>
+        </tr>
+        <tr>
+            <td>Uppskattat datum för sommaren</td>
+            <td>@summerMsg</td>
+        </tr>
+
+    </tbody>
+</table>
+<h3>Mätningar</h3>
+<p>Nedan visas enskilda dygnsmätningar, klicka på datumet för att visa detaljer</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Datum</th>
+            <th>Dygnsmedeltemperatur</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in StatsModel.Source)
+        {
+            var curDate = item.Date;
+            <tr>
+                <td><a href="/?city=@StatsModel.CityName&date=@curDate">@curDate</a></td>
+                <td>@item.DailyValues.AvgDailyTemp</td>
+            </tr>
+        }
+    </tbody>
+</table>
+@code {
+[Parameter]
+    public CityStats StatsModel { get; set; }
+}

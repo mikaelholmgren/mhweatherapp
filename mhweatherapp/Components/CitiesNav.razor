@@ -1,0 +1,12 @@
+﻿@using mhweatherapp.Services
+@using Microsoft.AspNetCore.Routing
+@inject IDBService _db
+@inject LinkGenerator _lg
+@foreach (var city in Cities.OrderBy(c => c))
+{
+
+
+    <li class="nav-item">
+        <a class="nav-link text-dark" href="@BaseUrl?city=@city">@city</a>
+    </li>
+}
